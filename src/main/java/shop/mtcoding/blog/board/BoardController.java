@@ -38,7 +38,9 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id) {
+    public String detail(@PathVariable Integer id, HttpServletRequest request) {
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
         return "board/detail";
     }
 }

@@ -16,6 +16,22 @@ public class BoardNativeRepositoryTest {
     @Autowired
     private BoardNativeRepository boardNativeRepository;
 
+    // 게시글 상세보기 테스트
+    @Test
+    public void findById_test() {
+       // given
+        int id = 1;
+
+       // when
+        Board board = boardNativeRepository.findById(id);
+        // System.out.println("findById_test : "+board);
+
+       // then
+        assertThat(board.getTitle()).isEqualTo("제목1");
+        assertThat(board.getContent()).isEqualTo("내용1");
+
+    }
+
     // 게시글 목록보기 테스트
     @Test
     public void findAll_test() {
