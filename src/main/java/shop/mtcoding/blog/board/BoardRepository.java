@@ -61,4 +61,11 @@ public class BoardRepository {
         query.executeUpdate();
     }
 
+    @Transactional
+    public void updateById(int id, String title, String content){
+        Board board = findById(id);
+        board.setTitle(title);
+        board.setContent(content);
+    } // 더티체킹
+
 }

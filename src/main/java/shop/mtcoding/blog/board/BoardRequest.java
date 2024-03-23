@@ -8,14 +8,12 @@ public class BoardRequest {
     public static class UpdateDTO {
         private String title;
         private String content;
-        private String username;
     }
 
     @Data
     public static class SaveDTO {
         private String title;
         private String content;
-        private String username;
 
         // DTO를 Entity로 바꾸는 메서드 만들기 인서트 할때만 필요, 3개만 들고
         // 이거 save하려면 Entity로 바꿔야함!
