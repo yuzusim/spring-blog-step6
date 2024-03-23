@@ -57,7 +57,7 @@ public class BoardController {
     // 게시글 쓰기
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
-        boardPersistRepository.save(reqDTO.toEntity());
+//        boardPersistRepository.save(reqDTO.toEntity());
         // DTO 받아서 toEntity 메서드로 호출, 객체로 바뀜
         // Board 객체를 toEntity() 담가!! 영속화 시킴!!
         return "redirect:/";
