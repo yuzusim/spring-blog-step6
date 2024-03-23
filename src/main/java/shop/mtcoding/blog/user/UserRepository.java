@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 public class UserRepository {
     private final EntityManager em;
 
+    public User findById(int id){
+        User user = em.find(User.class, id);
+        return user;
+    }
+
     public User findByIdAndPassword(UserRequest.LoginDTO reqDTO){
         Query query =
                 em.createQuery("select u from User u where u.username = :username and u.password = :password", User.class);
@@ -24,4 +29,14 @@ public class UserRepository {
         em.persist(user);
         return user;
     }
+
+    @Transactional
+    public User updateById(int id, String password, String email){
+        User user = findById(id);
+        user.setPassword(password);
+        user.setEmail(email);
+        return user;
+    }// 더티체킹
+
+
 }
