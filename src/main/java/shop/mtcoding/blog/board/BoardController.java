@@ -15,6 +15,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardNativeRepository boardNativeRepository;
+    private final BoardPersistRepository boardPersistRepository;
 
     @GetMapping("/board/{id}/update-form")
     public String uodateForm(@PathVariable Integer id, HttpServletRequest request) {
@@ -51,11 +52,10 @@ public class BoardController {
 
     // 게시글 쓰기
     @PostMapping("/board/save")
-    public String save(String title, String content, String username) {
-//        System.out.println("title : "+title);
-//        System.out.println("content : "+content);
-//        System.out.println("username : "+username);
-        boardNativeRepository.save(title, content, username);
+    public String save(BoardRequest.SaveDTO reqDTO) {
+        boardPersistRepository.save(reqDTO.toEntity());
+        // DTO 받아서 toEntity 메서드로 호출, 객체로 바뀜
+        // Board 객체를 toEntity() 담가!! 영속화 시킴!!
         return "redirect:/";
     }
 
