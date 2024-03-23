@@ -32,13 +32,9 @@ public class BoardController {
     // 게시글 삭제
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
-//        boardNativeRepository.deleteById(id);
+        boardPersistRepository.deleteById(id);
         return "redirect:/";
     }
-
-
-
-
 
     // 게시글 목록보기
     @GetMapping("/")
@@ -69,4 +65,6 @@ public class BoardController {
         request.setAttribute("board", board);
         return "board/detail";
     }
+
+
 }

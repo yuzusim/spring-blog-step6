@@ -38,15 +38,21 @@ public class BoardPersistRepository {
         return board;
     }
 
+    @Transactional
+    public void deleteById(int id){
+        Query query =
+                em.createQuery("delete from Board b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
 
-//    @Transactional
-//    public void deleteById(int id){
-//        Query query =
-//                em.createNativeQuery("delete from board_tb where id =?");
-//        query.setParameter(1, id);
-//        query.executeUpdate();
-//    }
+    @Transactional // 중첩 @Transactional !!
+    public void deleteByIdV2(int id) {
+        Board board = findById(id);
 
+        // 근데 remove가 어떻게 동작하는지 궁금하니 테스트 해보자!
+        em.remove(board);
+    }
 
 
 //    @Transactional
