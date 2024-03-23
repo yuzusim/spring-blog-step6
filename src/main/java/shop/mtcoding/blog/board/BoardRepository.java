@@ -2,6 +2,8 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +43,12 @@ public class BoardRepository {
         // Board 클래스에서 주어진 ID와 일치하는 엔티티를 데이터베이스에서 검색
         // 검색된 Board 객체가 반환되어 해당 메서드의 호출자에게 반환
 
+    }
+
+    @Transactional
+    public Board save(Board board) {
+        em.persist(board);
+        return board;
     }
 
 
