@@ -5,10 +5,22 @@ import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class BoardRepository {
     private final EntityManager em;
+
+
+    // 게시글 목록보기
+    public List<Board> findAll(){
+        // 이전쿼리 -> select * from board_tb order by id desc", Board.class
+        // 리팩 -> 쿼리 내에서 반복적으로 "Board"를 사용하지 않고 간단히 b로 참조할 수 있게
+        Query query =
+                em.createQuery("select b from Board b order by b.id desc", Board.class);
+        return  query.getResultList();
+    }
 
     // 게시글 상세보기
     public Board findByIdJoinUser(int id){

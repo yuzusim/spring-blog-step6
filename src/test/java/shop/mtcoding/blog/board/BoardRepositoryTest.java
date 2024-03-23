@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.List;
+
 @Import(BoardRepository.class)
 @DataJpaTest
 public class BoardRepositoryTest {
@@ -16,10 +18,14 @@ public class BoardRepositoryTest {
     private EntityManager em;
 
     @Test
-    public void _test() {
+    public void findAll_test() {
        // given
 
        // when
+        List<Board> boardList = boardRepository.findAll();
+        boardList.forEach(board -> {
+            System.out.println(board.getUser().getUsername()); // 여기서 레이지 로딩 발동
+        });
 
        // then
 
