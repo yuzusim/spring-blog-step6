@@ -14,28 +14,31 @@ import java.util.List;
 @Controller
 public class BoardController {
 
-    private final BoardNativeRepository boardNativeRepository;
     private final BoardPersistRepository boardPersistRepository;
 
     @GetMapping("/board/{id}/update-form")
     public String uodateForm(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
-        request.setAttribute("board", board);
+//        Board board = boardNativeRepository.findById(id);
+//        request.setAttribute("board", board);
         return "/board/update-form";
     }
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, String title, String content, String username) {
-        boardNativeRepository.updateById(id, title, content, username);
+//        boardNativeRepository.updateById(id, title, content, username);
         return "redirect:/board"+id;
     }
 
     // 게시글 삭제
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
-        boardNativeRepository.deleteById(id);
+//        boardNativeRepository.deleteById(id);
         return "redirect:/";
     }
+
+
+
+
 
     // 게시글 목록보기
     @GetMapping("/")
@@ -62,7 +65,7 @@ public class BoardController {
     // 게시글 상세보기
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardPersistRepository.findById(id);
         request.setAttribute("board", board);
         return "board/detail";
     }
