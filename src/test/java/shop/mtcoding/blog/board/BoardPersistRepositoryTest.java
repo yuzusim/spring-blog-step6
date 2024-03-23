@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Import(BoardPersistRepository.class)
 @DataJpaTest
 public class BoardPersistRepositoryTest {
@@ -15,6 +19,21 @@ public class BoardPersistRepositoryTest {
 
     @Autowired
     private EntityManager em;
+
+    @Test
+    public void findAll_test() {
+       // given
+        List<Board> boardList = boardPersistRepository.findAll();
+
+       // when
+        System.out.println("findAll_test/size : "+boardList.size());
+        System.out.println("findAll_test/username : "+boardList.get(1).getUsername());
+
+       // then
+        assertThat(boardList.size()).isEqualTo(4);
+        assertThat(boardList.get(1).getUsername()).isEqualTo("cos");
+
+    }
 
     @Test
     public void save_test() {

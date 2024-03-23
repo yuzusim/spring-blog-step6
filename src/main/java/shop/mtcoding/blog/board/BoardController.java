@@ -40,7 +40,7 @@ public class BoardController {
     // 게시글 목록보기
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardPersistRepository.findAll();
         request.setAttribute("boardList", boardList);
         return "index";
     }
