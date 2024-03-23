@@ -16,17 +16,22 @@ public class BoardController {
 
     private final BoardPersistRepository boardPersistRepository;
 
+    // 게시글 수정 폼
     @GetMapping("/board/{id}/update-form")
     public String uodateForm(@PathVariable Integer id, HttpServletRequest request) {
-//        Board board = boardNativeRepository.findById(id);
-//        request.setAttribute("board", board);
+        Board board = boardPersistRepository.findById(id);
+        request.setAttribute("board", board);
         return "/board/update-form";
     }
 
+    // @PathVariable을 사용하여 URL 경로에서 id를 추출하고,
+    // 이를 통해 업데이트할 게시글의 ID를 얻습니다.
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id, String title, String content, String username) {
-//        boardNativeRepository.updateById(id, title, content, username);
-        return "redirect:/board"+id;
+    public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
+//        Board board = boardPersistRepository.findById(id);
+//        board.update(board);
+        boardPersistRepository.updateById(id, reqDTO);
+        return "redirect:/board/"+id;
     }
 
     // 게시글 삭제

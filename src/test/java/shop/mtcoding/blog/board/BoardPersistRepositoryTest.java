@@ -42,7 +42,20 @@ public class BoardPersistRepositoryTest {
 //    }
 //
 
+    // 게시글 수정하기 테스트
+    @Test
+    public void updateById_test() {
+       // given
+        int id = 1;
+        String title = "제목수정1";
 
+       // when
+        Board board = boardPersistRepository.findById(id);
+        board.setTitle(title); // 더티체킹
+        em.flush();
+
+       // then
+    }
 
     // 게시글 상세보기 테스트
     @Test
