@@ -40,7 +40,8 @@ public class BoardController {
     // 게시글 삭제
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
-//        boardPersistRepository.deleteById(id);
+        // 권한, 인증 체크 지금은 생략
+        boardRepository.deleteById(id);
         return "redirect:/";
     }
 

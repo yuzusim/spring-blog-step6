@@ -45,11 +45,20 @@ public class BoardRepository {
 
     }
 
+    // 게시글 쓰기
     @Transactional
     public Board save(Board board) {
         em.persist(board);
         return board;
     }
 
+    // 게시글 삭제
+    @Transactional
+    public void deleteById(int id){
+        Query query =
+                em.createQuery("delete from Board b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
 
 }

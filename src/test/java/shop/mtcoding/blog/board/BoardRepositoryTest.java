@@ -17,6 +17,18 @@ public class BoardRepositoryTest {
     @Autowired
     private EntityManager em;
 
+    @Test
+    public void deleteById_test() {
+       // given
+        int id = 1;
+
+       // when
+        boardRepository.deleteById(id);
+
+       // then
+        System.out.println("deleteById_test : "+boardRepository.findAll().size());
+
+    }
 
     @Test
     public void findAll_test() {
