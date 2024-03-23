@@ -14,13 +14,13 @@ import java.util.List;
 @Controller
 public class BoardController {
 
-    private final BoardPersistRepository boardPersistRepository;
+    private final BoardRepository boardRepository;
 
     // 게시글 수정 폼
     @GetMapping("/board/{id}/update-form")
     public String uodateForm(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardPersistRepository.findById(id);
-        request.setAttribute("board", board);
+//        Board board = boardPersistRepository.findById(id);
+//        request.setAttribute("board", board);
         return "/board/update-form";
     }
 
@@ -30,22 +30,22 @@ public class BoardController {
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
 //        Board board = boardPersistRepository.findById(id);
 //        board.update(board);
-        boardPersistRepository.updateById(id, reqDTO);
+//        boardPersistRepository.updateById(id, reqDTO);
         return "redirect:/board/"+id;
     }
 
     // 게시글 삭제
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
-        boardPersistRepository.deleteById(id);
+//        boardPersistRepository.deleteById(id);
         return "redirect:/";
     }
 
     // 게시글 목록보기
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<Board> boardList = boardPersistRepository.findAll();
-        request.setAttribute("boardList", boardList);
+//        List<Board> boardList = boardPersistRepository.findAll();
+//        request.setAttribute("boardList", boardList);
         return "index";
     }
 
@@ -66,7 +66,7 @@ public class BoardController {
     // 게시글 상세보기
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardPersistRepository.findById(id);
+        Board board = boardRepository.findByIdJoinUser(id);
         request.setAttribute("board", board);
         return "board/detail";
     }

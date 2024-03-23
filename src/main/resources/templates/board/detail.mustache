@@ -4,13 +4,24 @@
 
     <!-- 수정삭제버튼 -->
     <div class="d-flex justify-content-end">
-        <a href="/board/{{id}}/update-form" class="btn btn-warning me-1">수정</a>
-        <form action="/board/{{id}}/delete" method="post">
+        <a href="/board/{{board.id}}/update-form" class="btn btn-warning me-1">수정</a>
+        <form action="/board/{{board.id}}/delete" method="post">
             <button class="btn btn-danger">삭제</button>
         </form>
+        <!--
+        삭제는 무조건 post로 요청해야지 get으로 요청시 위험 할 수 있다.
+        게시글을 삭제하면 클릭이 되어버리는 공격을 당할 수 있음
+        그 사람의 세션을 이용해서 공격할 수 있음
+        그래서 삭제 버튼은 from으로 감싸준다!
+        -->
     </div>
     <div class="d-flex justify-content-end">
-        <b>작성자</b> : {{board.username}}
+        <b>작성자</b> : {{board.user.username}}
+        <!--
+        board는 컨트롤러에서 모델에 담겨져 전달된 게시글 객체를 나타냅니다.
+        user는 게시글 객체 안에 포함된 사용자 객체를 가리키며,
+        username은 사용자 객체의 이름을 나타냅니다.
+        -->
     </div>
 
     <!-- 게시글내용 -->
