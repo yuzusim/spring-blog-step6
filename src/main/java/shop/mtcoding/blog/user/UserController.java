@@ -3,9 +3,15 @@ package shop.mtcoding.blog.user;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog._core.errors.exception.Exception400;
+import shop.mtcoding.blog._core.errors.exception.Exception401;
+
+import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Controller
@@ -15,14 +21,13 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO){
-        User sessionUser = userRepository.findByIdAndPassword(reqDTO);
+        User sessionUser = userRepository.findByUsernameAndpassword(reqDTO);
         session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
     }
 
     @PostMapping("/join")
-    public String join(UserRequest.JoinDTO reqDTO){
-        // 회원가입 됐을 때, 바로 로그인 되게
+    public String join(UserRequest.JoinDTO reqDTO) {
         User sessionUser = userRepository.save(reqDTO.toEntity());
         session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
@@ -41,6 +46,12 @@ public class UserController {
     @GetMapping("/user/update-form")
     public String updateForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null) {
+            throw new Exception401("인증이 되지 않았어요. 로그인해주세요");
+            
+        }
+        
         User user = userRepository.findById(sessionUser.getId());
         request.setAttribute("user", user);
         return "user/update-form";
