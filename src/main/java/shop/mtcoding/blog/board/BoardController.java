@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
+import shop.mtcoding.blog._core.errors.exception.Exception404;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public class BoardController {
     @GetMapping("/board/{id}/update-form")
     public String uodateForm(@PathVariable Integer id, HttpServletRequest request) {
         Board board = boardRepository.findById(id);
+
+        if (board == null) {
+            throw new Exception404("해당 게시글을 찾을 수 없습니다.");
+        }
+
         request.setAttribute("board", board);
         return "/board/update-form";
     }
