@@ -21,9 +21,14 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO){
-        User sessionUser = userRepository.findByUsernameAndpassword(reqDTO);
-        session.setAttribute("sessionUser", sessionUser);
-        return "redirect:/";
+        try {
+            User sessionUser = userRepository.findByUsernameAndpassword(reqDTO);
+            session.setAttribute("sessionUser", sessionUser);
+            return "redirect:/";
+        } catch (EmptyResultDataAccessException e) {
+            throw new Exception401("유저네임 혹은 비밀번호가 틀렸어요");
+        }
+
     }
 
     @PostMapping("/join")
