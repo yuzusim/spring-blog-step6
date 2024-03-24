@@ -28,8 +28,11 @@ public class UserController {
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO) {
-        User sessionUser = userRepository.save(reqDTO.toEntity());
-        session.setAttribute("sessionUser", sessionUser);
+        try {
+            userRepository.save(reqDTO.toEntity());
+        } catch (DataIntegrityViolationException e) {
+            throw new Exception400("동일한 유저 네임이 존재합니다.");
+        }
         return "redirect:/";
     }
 
@@ -49,7 +52,6 @@ public class UserController {
 
         if (sessionUser == null) {
             throw new Exception401("인증이 되지 않았어요. 로그인해주세요");
-            
         }
         
         User user = userRepository.findById(sessionUser.getId());
