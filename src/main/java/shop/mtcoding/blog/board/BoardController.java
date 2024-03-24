@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public class BoardController {
     // 이를 통해 업데이트할 게시글의 ID를 얻습니다.
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Board board = boardRepository.findById(id);
+
+        if (sessionUser.getId() != board.getUser().getId()) {
+            throw new Exception403("게시물을 수정할 권한이 없습니다.");
+        }
+
         boardRepository.updateById(id, reqDTO.getTitle(), reqDTO.getContent());
         return "redirect:/board/"+id;
     }
