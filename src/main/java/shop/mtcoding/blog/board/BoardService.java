@@ -16,26 +16,15 @@ public class BoardService {
 
     private final BoardJPARepository boardJPARepository;
 
-
-    // 로그인을 하고 게시글의 주인이면 isOwne가 true가 된다 !
-//        boolean isOwner  = false; // 게시글 주인 여부
-//        if (sessionUser != null) { // 세션 유저가 null이 아니면 (로그인 했으면 )
-//            if (sessionUser.getId() == board.getUser().getId()) {
-//                isOwner = true;
-//            }
-//        }
-//
-//        request.setAttribute("isOwner", isOwner);
-//        request.setAttribute("board", board);
-
     // board, isOwner
-    public Board 글상세보기(int boardId, User sessionUser) {
+    public Board 글상세보기(Integer boardId, User sessionUser) {
         Board board = boardJPARepository.findByIdJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
 
         // 게시글 주인 여부
-        boolean isBoardOwner = false;
-        if (sessionUser != null) {
+        // 로그인을 하고 게시글의 주인이면 isOwne가 true가 된다 !
+        boolean isBoardOwner = false; // 게시글 주인 여부
+        if (sessionUser != null) { // 세션 유저가 null이 아니면 (로그인 했으면 )
             if (sessionUser.getId() == board.getUser().getId()) {
                 isBoardOwner = true;
             }
@@ -110,6 +99,8 @@ public class BoardService {
         boardJPARepository.save(reqDTO.toEntity(sessionUser));
 
     }
+
+
 
 }
 

@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class BoardController {
 
-    private final BoardRepository boardRepository;
+    //private final BoardRepository boardRepository;
     private final BoardService boardService;
     private final HttpSession session;
 
@@ -74,7 +74,7 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardRepository.findByIdJoinUser(id);
+        Board board = boardService.글상세보기(id, sessionUser);
 
         request.setAttribute("board", board);
         System.out.println("서버 사이드 랜더링 직전에는 Board와 User만 조회된 상태이다~~~~~~");
