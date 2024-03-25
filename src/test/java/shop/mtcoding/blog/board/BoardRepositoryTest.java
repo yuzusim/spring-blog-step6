@@ -17,7 +17,19 @@ public class BoardRepositoryTest {
     @Autowired
     private EntityManager em;
 
+    @Test
+    public void findByIdJoinUserAndReplies_test(){
+        // given
+        int id = 4; // 더미를 알고 넣기
 
+        // when
+        // 옵셔널이라 오류가 나니까 .get 붙여줌. get는 있으니까 가져와! 라는 말
+//        Board boards = boardJPARepository.findByIdJoinUserAndReplies(id).get();
+
+
+        // then
+
+    }
 
     @Test
     public void updateById_test() {

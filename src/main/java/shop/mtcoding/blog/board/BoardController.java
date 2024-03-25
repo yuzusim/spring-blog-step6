@@ -76,16 +76,9 @@ public class BoardController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findByIdJoinUser(id);
 
-        // 로그인을 하고 게시글의 주인이면 isOwne가 true가 된다 !
-        boolean isOwner  = false; // 게시글 주인 여부
-        if (sessionUser != null) { // 세션 유저가 null이 아니면 (로그인 했으면 )
-            if (sessionUser.getId() == board.getUser().getId()) {
-                isOwner = true;
-            }
-        }
-
-        request.setAttribute("isOwner", isOwner);
         request.setAttribute("board", board);
+        System.out.println("서버 사이드 랜더링 직전에는 Board와 User만 조회된 상태이다~~~~~~");
+
         return "board/detail";
     }
 

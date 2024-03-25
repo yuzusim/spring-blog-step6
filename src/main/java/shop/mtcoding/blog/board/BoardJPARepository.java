@@ -7,6 +7,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface BoardJPARepository extends JpaRepository<Board, Integer> {
+
     @Query("select b from Board b join fetch b.user u where b.id = :id")
     Optional<Board> findByIdJoinUser(@Param("id") int id);
+
+//    @Query("select b from Board b join fetch b.user u join fetch b.replies r where b.id = :id")
+//    Optional<Board> findByIdJoinUserAndReply(@Param("id") int id);
+
+    // board에 다 담을 것
+    @Query("select b from Board b join fetch b.user join fetch b.replies r where b.id = :id")
+    Optional<Board> findByIdJoinUserAAndReplies(@Param("id") int id);
+
 }

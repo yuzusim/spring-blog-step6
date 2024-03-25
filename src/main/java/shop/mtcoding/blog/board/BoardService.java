@@ -16,6 +16,50 @@ public class BoardService {
 
     private final BoardJPARepository boardJPARepository;
 
+
+    // 로그인을 하고 게시글의 주인이면 isOwne가 true가 된다 !
+//        boolean isOwner  = false; // 게시글 주인 여부
+//        if (sessionUser != null) { // 세션 유저가 null이 아니면 (로그인 했으면 )
+//            if (sessionUser.getId() == board.getUser().getId()) {
+//                isOwner = true;
+//            }
+//        }
+//
+//        request.setAttribute("isOwner", isOwner);
+//        request.setAttribute("board", board);
+
+    // board, isOwner
+    public Board 글상세보기(int boardId, User sessionUser) {
+        Board board = boardJPARepository.findByIdJoinUser(boardId)
+                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
+
+        // 게시글 주인 여부
+        boolean isBoardOwner = false;
+        if (sessionUser != null) {
+            if (sessionUser.getId() == board.getUser().getId()) {
+                isBoardOwner = true;
+            }
+        }
+
+        board.setBoardOwner(isBoardOwner);
+
+        // 레이지 로딩
+        // 댓글은 forEach문 돌리기 (N이니까)
+        board.getReplies().forEach(reply -> {
+            boolean isReplyOwner = false;
+
+            // 댓글 주인 여부
+            if (sessionUser != null) {
+                if (reply.getUser().getId() == sessionUser.getId()) {
+                    isReplyOwner = true;
+                }
+            }
+            reply.setReplyOwner(isReplyOwner);
+        });
+
+        return board;
+    }
+
     public List<Board> 글목록조회() {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         return boardJPARepository.findAll(sort);
@@ -36,7 +80,7 @@ public class BoardService {
 
     }
 
-    public Board 글조회(int boardId){
+    public Board 글조회(int boardId) {
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
         return board;
