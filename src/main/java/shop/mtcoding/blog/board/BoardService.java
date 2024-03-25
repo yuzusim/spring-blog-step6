@@ -2,16 +2,25 @@ package shop.mtcoding.blog.board;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
 import shop.mtcoding.blog.user.User;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class BoardService {
 
     private final BoardJPARepository boardJPARepository;
+
+    public List<Board> 글목록조회() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        return boardJPARepository.findAll(sort);
+        // return에 sort 객체 안 넣어주면 DESC 안 됨
+    }
 
     public void 글삭제(Integer boardId, Integer sessionUserId) {
         // 1. 조회 및 예외처리
@@ -57,8 +66,6 @@ public class BoardService {
         boardJPARepository.save(reqDTO.toEntity(sessionUser));
 
     }
-
-
 
 }
 

@@ -51,7 +51,7 @@ public class BoardController {
     // 게시글 목록보기
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<Board> boardList =boardRepository.findAll();
+        List<Board> boardList = boardService.글목록조회();
         request.setAttribute("boardList", boardList);
         return "index";
     }
