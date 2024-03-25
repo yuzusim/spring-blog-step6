@@ -26,15 +26,16 @@ public class ReplyService {
         return reply;
     }
 
-//    @Transactional
-//    public void 댓글삭제(int replyId, int sessionUserId) {
-//        Reply reply = replyJPARepository.findById(replyId)
-//                .orElseThrow(() -> new Exception404("없는 댓글을 삭제할 수 없어요"));
-//
-//        if(reply.getUser().getId() != sessionUserId){
-//            throw new Exception403("댓글을 삭제할 권한이 없어요");
-//        }
-//
-//        replyJPARepository.deleteById(replyId);
-//    }
+    @Transactional
+    public void 댓글삭제(int replyId, int sessionUserId) {
+        Reply reply = replyJPARepository.findById(replyId)
+                .orElseThrow(() -> new Exception404("없는 댓글을 삭제할 수 없어요"));
+
+        if (reply.getUser().getId() != sessionUserId) {
+            throw new Exception403("댓글을 삭제할 권한이 없어요");
+
+        }
+        replyJPARepository.deleteById(replyId);
+
+    }
 }
