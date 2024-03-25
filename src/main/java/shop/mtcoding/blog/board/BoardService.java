@@ -13,6 +13,20 @@ public class BoardService {
 
     private final BoardJPARepository boardJPARepository;
 
+    public void 글삭제(Integer boardId, Integer sessionUserId) {
+        // 1. 조회 및 예외처리
+        // 삭제와 업데이트는 조회하고 들어가기!
+        Board board = boardJPARepository.findById(boardId)
+                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
+
+        // 2. 권한처리
+        if (sessionUserId != board.getUser().getId()) {
+            throw new Exception403("게시글 수정할 권한이 없습니다.");
+        }
+        boardJPARepository.deleteById(boardId);
+
+    }
+
     public Board 글조회(int boardId){
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
@@ -43,6 +57,7 @@ public class BoardService {
         boardJPARepository.save(reqDTO.toEntity(sessionUser));
 
     }
+
 
 
 }
