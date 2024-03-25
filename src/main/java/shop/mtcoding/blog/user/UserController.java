@@ -17,27 +17,19 @@ import java.util.zip.DataFormatException;
 @Controller
 public class UserController {
     private final UserRepository userRepository;
+    private final UserService userService;
     private final HttpSession session;
 
     @PostMapping("/login")
-    public String login(UserRequest.LoginDTO reqDTO){
-        try {
-            User sessionUser = userRepository.findByUsernameAndpassword(reqDTO);
-            session.setAttribute("sessionUser", sessionUser);
-            return "redirect:/";
-        } catch (EmptyResultDataAccessException e) {
-            throw new Exception401("유저네임 혹은 비밀번호가 틀렸어요");
-        }
-
+    public String login(UserRequest.LoginDTO reqDTO) {
+        User sessionUser = userService.로그인(reqDTO);
+        session.setAttribute("sessionUser", sessionUser);
+        return "redirect:/";
     }
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO) {
-        try {
-            userRepository.save(reqDTO.toEntity());
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception400("동일한 유저 네임이 존재합니다.");
-        }
+        userService.회원가입(reqDTO);
         return "redirect:/";
     }
 
@@ -51,26 +43,23 @@ public class UserController {
         return "user/login-form";
     }
 
-    @GetMapping("/user/update-form")
+    @GetMapping("/user/update-form") // session(mypage)에 있으니 id가 필요 없음
     public String updateForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-
-        if (sessionUser == null) {
-            throw new Exception401("인증이 되지 않았어요. 로그인해주세요");
-        }
-        
-        User user = userRepository.findById(sessionUser.getId());
+        User user = userService.회원수정폼(sessionUser.getId());
         request.setAttribute("user", user);
         return "user/update-form";
     }
 
+
     @PostMapping("/user/update")
-    public String update(UserRequest.UpdateDTO reqDTO){
+    public String update(UserRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        User newSessionUser = userRepository.updateById(sessionUser.getId(), reqDTO.getPassword(), reqDTO.getEmail());
+        User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
         session.setAttribute("sessionUser", newSessionUser);
         return "redirect:/";
     }
+
 
     @GetMapping("/logout")
     public String logout() {

@@ -17,6 +17,8 @@ public class BoardRepositoryTest {
     @Autowired
     private EntityManager em;
 
+
+
     @Test
     public void updateById_test() {
        // given
