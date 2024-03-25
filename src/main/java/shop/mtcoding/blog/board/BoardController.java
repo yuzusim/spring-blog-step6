@@ -19,33 +19,24 @@ import java.util.List;
 public class BoardController {
 
     private final BoardRepository boardRepository;
+    private final BoardService boardService;
     private final HttpSession session;
 
     // 게시글 수정 폼
-    @GetMapping("/board/{id}/update-form")
-    public String uodateForm(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardRepository.findById(id);
-
-        if (board == null) {
-            throw new Exception404("해당 게시글을 찾을 수 없습니다.");
-        }
-
-        request.setAttribute("board", board);
-        return "/board/update-form";
-    }
+//    @GetMapping("/board/{id}/update-form")
+//    public String updateForm(@PathVariable Integer id, HttpServletRequest request) {
+//        User sessionUser = (User) session.getAttribute("sessionUser");
+//        Board board = boardService.게시글수정폼(id, sessionUser.getId());
+//        request.setAttribute("board", board);
+//        return "/board/update-form";
+//    }
 
     // @PathVariable을 사용하여 URL 경로에서 id를 추출하고,
     // 이를 통해 업데이트할 게시글의 ID를 얻습니다.
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardRepository.findById(id);
-
-        if (sessionUser.getId() != board.getUser().getId()) {
-            throw new Exception403("게시물을 수정할 권한이 없습니다.");
-        }
-
-        boardRepository.updateById(id, reqDTO.getTitle(), reqDTO.getContent());
+        boardService.글수정(id, sessionUser.getId(), reqDTO );
         return "redirect:/board/"+id;
     }
 
@@ -80,9 +71,8 @@ public class BoardController {
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-
-        // toEntity 인서트 할때만 만든다
-        boardRepository.save(reqDTO.toEntity(sessionUser));
+        // 권한 체크는 생략
+        boardService.글쓰기(reqDTO, sessionUser);
         return "redirect:/";
     }
 
