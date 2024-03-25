@@ -3,6 +3,8 @@ package shop.mtcoding.blog.reply;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import shop.mtcoding.blog.board.Board;
+import shop.mtcoding.blog.user.User;
 
 import java.util.List;
 
@@ -16,6 +18,23 @@ public class ReplyJPARepositoryTest {
 
     @Autowired
     private ReplyJPARepository replyJPARepository;
+
+    @Test
+    public void save_test() {
+       // given
+        Reply reply = Reply.builder()
+                .board(Board.builder().id(1).build())
+                .user(User.builder().id(1).build())
+                .comment("댓글5")
+                .build();
+
+
+       // when
+        replyJPARepository.save(reply);
+
+       // then
+
+    }
 
 
 }

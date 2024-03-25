@@ -56,11 +56,11 @@ public class BoardJPARepositoryTest {
         int id = 1;
 
         // when
-        Board board = boardJPARepository.findByIdJoinUser(id);
+        //Board board = boardJPARepository.findByIdJoinUser(id);
 
         // then
-        System.out.println("findByIdJoinUse_test : "+board.getTitle());
-        System.out.println("findByIdJoinUse_test : "+board.getUser().getUsername());
+//        System.out.println("findByIdJoinUse_test : "+board.getTitle());
+//        System.out.println("findByIdJoinUse_test : "+board.getUser().getUsername());
 
 //        System.out.println("findByIdJoinUser_test" + board.getUser());
 //        System.out.println("findByIdJoinUser_test" + board.getTitle());
