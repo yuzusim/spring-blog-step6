@@ -23,13 +23,12 @@ public class BoardController {
     private final HttpSession session;
 
     // 게시글 수정 폼
-//    @GetMapping("/board/{id}/update-form")
-//    public String updateForm(@PathVariable Integer id, HttpServletRequest request) {
-//        User sessionUser = (User) session.getAttribute("sessionUser");
-//        Board board = boardService.게시글수정폼(id, sessionUser.getId());
-//        request.setAttribute("board", board);
-//        return "/board/update-form";
-//    }
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable Integer id, HttpServletRequest request) throws Exception {
+        Board board = boardService.글조회(id);
+        request.setAttribute("board", board);
+        return "/board/update-form";
+    }
 
     // @PathVariable을 사용하여 URL 경로에서 id를 추출하고,
     // 이를 통해 업데이트할 게시글의 ID를 얻습니다.

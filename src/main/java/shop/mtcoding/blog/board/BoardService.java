@@ -13,8 +13,11 @@ public class BoardService {
 
     private final BoardJPARepository boardJPARepository;
 
-    //    public Board 게시글수정폼(Integer id, Integer id1) {
-//    }
+    public Board 글조회(int boardId){
+        Board board = boardJPARepository.findById(boardId)
+                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
+        return board;
+    }
 
     public void 글수정(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO) {
         // 1. 더티체킹 하기 위해 조회 및 예외처리
@@ -33,11 +36,14 @@ public class BoardService {
     } // 더티체킹
 
 
+    //    public Board 게시글수정폼(Integer id, Integer id1) {
+//    }
     @Transactional
     public void 글쓰기(BoardRequest.SaveDTO reqDTO, User sessionUser) {
         boardJPARepository.save(reqDTO.toEntity(sessionUser));
 
     }
+
 
 }
 
